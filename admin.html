@@ -70,14 +70,15 @@ Loading...
 </div>
 
 <script type="module">
-
 import { db } from "./firebase.js";
 
 import {
 collection,
-getDocs
+getDocs,
+doc,
+getDoc,
+updateDoc
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-
 const depositList=document.getElementById("depositList");
 
 depositList.innerHTML="";
