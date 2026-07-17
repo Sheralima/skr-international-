@@ -1,1 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
 
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.admin-card{
+background:#fff;
+padding:20px;
+margin:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+.request{
+border:1px solid #ddd;
+padding:15px;
+margin-top:15px;
+border-radius:8px;
+}
+
+.approve{
+background:green;
+color:white;
+padding:10px 15px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin-right:10px;
+}
+
+.reject{
+background:red;
+color:white;
+padding:10px 15px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>SKR INTERNATIONAL</h1>
+
+<p>Admin Dashboard</p>
+
+</header>
+
+<div class="admin-card">
+
+<h2>Deposit Requests</h2>
+
+<div id="depositList">
+
+Loading...
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+
+import {
+collection,
+getDocs
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+const depositList=document.getElementById("depositList");
+
+depositList.innerHTML="";
+
+const snapshot=await getDocs(collection(db,"deposits"));
+
+snapshot.forEach((document)=>{
+
+const data=document.data();
+
+depositList.innerHTML+=`
+
+<div class="request">
+
+<b>Email:</b> ${data.email}<br><br>
+
+<b>Amount:</b> Rs. ${data.amount}<br><br>
+
+<b>Method:</b> ${data.method}<br><br>
+
+<b>Status:</b>
+
+<span id="status-${document.id}">
+
+${data.status}
+
+</span>
+
+<br><br>
+
+<button
+class="approve"
+onclick="approveDeposit('${document.id}')">
+
+Approve
+
+</button>
+
+<button
+class="reject"
+onclick="rejectDeposit('${document.id}')">
+
+Reject
+
+</button>
+
+</div>
+
+`;
+
+});
+
+</script>
+
+</body>
+</html>
