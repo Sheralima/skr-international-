@@ -1,1 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login</title>
 
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="register-box">
+
+<h2>Admin Login</h2>
+
+<input
+type="email"
+id="email"
+placeholder="Admin Email">
+
+<input
+type="password"
+id="password"
+placeholder="Admin Password">
+
+<button id="loginBtn">
+
+Login
+
+</button>
+
+</div>
+
+<script type="module">
+
+import { auth } from "./firebase.js";
+
+import {
+signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+document.getElementById("loginBtn").addEventListener("click",async()=>{
+
+const email=document.getElementById("email").value.trim();
+const password=document.getElementById("password").value;
+
+try{
+
+await signInWithEmailAndPassword(auth,email,password);
+
+if(email==="admin@skr.com"){
+
+window.location.href="admin.html";
+
+}else{
+
+alert("You are not Admin");
+
+}
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
