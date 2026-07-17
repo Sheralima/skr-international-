@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Register - SKR INTERNATIONAL</title>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
-
 <body>
 
 <div class="register-box">
@@ -30,7 +27,7 @@ placeholder="Email Address">
 <input
 type="password"
 id="password"
-placeholder="Password">
+placeholder="Password (Minimum 6 Characters)">
 
 <button id="registerBtn">
 
@@ -53,11 +50,7 @@ Login
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
 import { auth, db } from "./firebase.js";
 
 import {
@@ -69,47 +62,95 @@ doc,
 setDoc
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
+const registerBtn=document.getElementById("registerBtn");
 
-document.getElementById("registerBtn").addEventListener("click", async () => {
+registerBtn.addEventListener("click",async()=>{
 
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+const name=document.getElementById("name").value.trim();
 
-  if (name === "" || email === "" || password === "") {
-    alert("Please fill all fields.");
-    return;
-  }
+const email=document.getElementById("email").value.trim();
 
-  if (password.length < 6) {
-    alert("Password must be at least 6 characters.");
-    return;
-  }
+const password=document.getElementById("password").value;
 
-  try {
+if(name===""){
 
-    const userCredential =
-      await createUserWithEmailAndPassword(auth, email, password);
+alert("Please enter your name");
 
-    await setDoc(doc(db, "users", userCredential.user.uid), {
-      name: name,
-      email: email,
-      balance: 0,
-      createdAt: new Date().toISOString()
-    });
+return;
 
-    alert("Account Created Successfully!");
+}
 
-    window.location.href = "login.html";
+if(email===""){
 
-  } catch (error) {
+alert("Please enter your email");
 
-    alert(error.code + "\n" + error.message);
+return;
 
-  }
+}
+
+if(password===""){
+
+alert("Please enter password");
+
+return;
+
+}
+
+if(password.length<6){
+
+alert("Password must be at least 6 characters");
+
+return;
+
+}
+
+try{
+
+const userCredential=
+
+await createUserWithEmailAndPassword(
+
+auth,
+
+email,
+
+password
+
+);
+
+await setDoc(
+
+doc(db,"users",userCredential.user.uid),
+
+{
+
+name:name,
+
+email:email,
+
+balance:0,
+
+status:"Active",
+
+createdAt:new Date().toISOString()
+
+}
+
+);
+
+alert("Account Created Successfully");
+
+window.location.href="login.html";
+
+}catch(error){
+
+alert(error.message);
+
+}
 
 });
-  </script>
+
+</script>
 
 </body>
 </html>
