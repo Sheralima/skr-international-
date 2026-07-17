@@ -1,28 +1,30 @@
+// ===========================
 // Animated Counter
+// ===========================
 
 const counters = document.querySelectorAll(".counter");
 
-counters.forEach(counter=>{
+counters.forEach(counter => {
 
-counter.innerText="0";
+counter.innerText = "0";
 
-const updateCounter=()=>{
+const updateCounter = () => {
 
-const target=+counter.getAttribute("data-target");
+const target = +counter.getAttribute("data-target");
 
-const count=+counter.innerText;
+const count = +counter.innerText;
 
-const increment=target/100;
+const increment = target / 100;
 
-if(count<target){
+if(count < target){
 
-counter.innerText=Math.ceil(count+increment);
+counter.innerText = Math.ceil(count + increment);
 
 setTimeout(updateCounter,20);
 
 }else{
 
-counter.innerText=target;
+counter.innerText = target;
 
 }
 
@@ -32,31 +34,62 @@ updateCounter();
 
 });
 
-
+// ===========================
 // Image Slider
+// ===========================
 
-const slides=document.querySelectorAll(".slide");
+const slides = document.querySelectorAll(".slide");
 
-let current=0;
+if(slides.length > 0){
 
-function showSlide(){
+let current = 0;
 
-slides.forEach(slide=>{
+setInterval(()=>{
 
-slide.classList.remove("active");
-
-});
+slides[current].classList.remove("active");
 
 current++;
 
-if(current>=slides.length){
+if(current >= slides.length){
 
-current=0;
+current = 0;
 
 }
 
 slides[current].classList.add("active");
 
+},3000);
+
 }
 
-setInterval(showSlide,3000);
+// ===========================
+// Smooth Scroll
+// ===========================
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+
+anchor.addEventListener("click",function(e){
+
+e.preventDefault();
+
+const target = document.querySelector(this.getAttribute("href"));
+
+if(target){
+
+target.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+}
+
+});
+
+});
+
+// ===========================
+// Console
+// ===========================
+
+console.log("SKR INTERNATIONAL Loaded Successfully");
