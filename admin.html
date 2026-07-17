@@ -130,7 +130,67 @@ Reject
 `;
 
 });
+window.approveDeposit = async function(id){
 
+try{
+
+const depositRef = doc(db,"deposits",id);
+
+const depositSnap = await getDoc(depositRef);
+
+if(!depositSnap.exists()) return;
+
+const deposit = depositSnap.data();
+
+const userRef = doc(db,"users",deposit.uid);
+
+const userSnap = await getDoc(userRef);
+
+if(userSnap.exists()){
+
+const oldBalance = Number(userSnap.data().balance || 0);
+
+await updateDoc(userRef,{
+balance: oldBalance + Number(deposit.amount)
+});
+
+}
+
+await updateDoc(depositRef,{
+status:"Approved"
+});
+
+document.getElementById("status-"+id).innerHTML="Approved";
+
+alert("Deposit Approved");
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+window.rejectDeposit = async function(id){
+
+try{
+
+await updateDoc(doc(db,"deposits",id),{
+status:"Rejected"
+});
+
+document.getElementById("status-"+id).innerHTML="Rejected";
+
+alert("Deposit Rejected");
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+}
 </script>
 
 </body>
